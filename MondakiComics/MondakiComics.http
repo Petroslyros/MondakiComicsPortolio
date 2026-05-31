@@ -1,0 +1,6 @@
+@MondakiComics_HostAddress = http://localhost:5194
+
+GET {{MondakiComics_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
