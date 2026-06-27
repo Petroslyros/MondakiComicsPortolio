@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-//using MondakiComics.Configuration;
-//using MondakiComics.Core.Helpers;
+using MondakiComics.Configuration;
+using MondakiComics.Core.Helpers;
 using MondakiComics.Data;
-//using MondakiComics.Repositories;
-//using MondakiComics.Services;
-//using MondakiComics.Services.Interfaces;
+using MondakiComics.Exceptions;
+using MondakiComics.Repositories;
+using MondakiComics.Services;
+using MondakiComics.Services.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Serilog;
@@ -23,6 +24,8 @@ var dbUser = Environment.GetEnvironmentVariable("MONDAKI_DB_USER") ?? "mondaki_u
 var dbPass = Environment.GetEnvironmentVariable("MONDAKI_DB_PASS") ?? "";
 var jwtSecret = Environment.GetEnvironmentVariable("MONDAKI_JWT_SECRET") ?? "dev-placeholder-secret";
 
+builder.Configuration["Authentication:SecretKey"] = jwtSecret;
+
 // Build connection string from environment variables
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 connString = connString!
@@ -37,13 +40,17 @@ builder.Services.AddDbContext<MondakiDbContext>(options =>
     options.UseNpgsql(connString));
 
 // Add UnitOfWork DI
-//builder.Services.AddRepositories();
+builder.Services.AddRepositories();
+
+builder.Services.AddScoped<IImageUploadService, ImageUploadService>();
 
 // Add ApplicationService DI
-//builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
+
+
 
 // AutoMapper
-//builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MapperConfig>());
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MapperConfig>());
 
 // Serilog
 builder.Host.UseSerilog((ctx, lc) =>
@@ -61,9 +68,9 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = "https://localhost:5001",
+        ValidIssuer = "https://localhost:5002",
         ValidateAudience = true,
-        ValidAudience = "https://localhost:5001",
+        ValidAudience = "https://localhost:5002",
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
@@ -132,7 +139,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-//app.UseMiddleware<ErrorHandlerMiddleware>();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

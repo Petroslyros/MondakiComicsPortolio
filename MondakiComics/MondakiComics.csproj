@@ -27,16 +27,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Configuration\" />
-    <Folder Include="Core\Filters\" />
-    <Folder Include="Core\Helpers\" />
-    <Folder Include="Core\Security\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="Models\" />
-    <Folder Include="Repositories\Interfaces\" />
-    <Folder Include="Services\Interfaces\" />
-  </ItemGroup>
-
 </Project>
