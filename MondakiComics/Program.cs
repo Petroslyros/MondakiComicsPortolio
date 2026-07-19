@@ -23,7 +23,17 @@ var dbName = Environment.GetEnvironmentVariable("MONDAKI_DB_NAME") ?? "mondakico
 var dbUser = Environment.GetEnvironmentVariable("MONDAKI_DB_USER") ?? "mondaki_user";
 var dbPass = Environment.GetEnvironmentVariable("MONDAKI_DB_PASS") ?? "";
 var jwtSecret = Environment.GetEnvironmentVariable("MONDAKI_JWT_SECRET") ?? "dev-placeholder-secret";
+var r2AccessKey = Environment.GetEnvironmentVariable("MONDAKI_R2_ACCESS_KEY") ?? "";
+var r2SecretKey = Environment.GetEnvironmentVariable("MONDAKI_R2_SECRET_KEY") ?? "";
+var r2Endpoint = Environment.GetEnvironmentVariable("MONDAKI_R2_ENDPOINT") ?? "";
+var r2Bucket = Environment.GetEnvironmentVariable("MONDAKI_R2_BUCKET") ?? "mondaki-comics";
+var r2PublicUrl = Environment.GetEnvironmentVariable("MONDAKI_R2_PUBLIC_URL") ?? "";
 
+builder.Configuration["R2:AccessKey"] = r2AccessKey;
+builder.Configuration["R2:SecretKey"] = r2SecretKey;
+builder.Configuration["R2:Endpoint"] = r2Endpoint;
+builder.Configuration["R2:Bucket"] = r2Bucket;
+builder.Configuration["R2:PublicUrl"] = r2PublicUrl;
 builder.Configuration["Authentication:SecretKey"] = jwtSecret;
 
 // Build connection string from environment variables
