@@ -67,6 +67,8 @@ builder.Host.UseSerilog((ctx, lc) =>
     lc.ReadFrom.Configuration(ctx.Configuration));
 
 // JWT Authentication
+var issuer = Environment.GetEnvironmentVariable("MONDAKI_JWT_ISSUER") ?? "https://localhost:5002";
+builder.Configuration["Authentication:Issuer"] = issuer;
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -78,9 +80,9 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = "https://localhost:5002",
+        ValidIssuer = issuer,
         ValidateAudience = true,
-        ValidAudience = "https://localhost:5002",
+        ValidAudience = issuer,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))

@@ -43,7 +43,8 @@ namespace MondakiComics.Controllers
                 user.Username!,
                 user.Email!,
                 user.UserRole,
-                configuration["Authentication:SecretKey"]!
+                configuration["Authentication:SecretKey"]!,
+                configuration["Authentication:Issuer"]!
             );
 
             var jwtToken = new JwtTokenDTO
