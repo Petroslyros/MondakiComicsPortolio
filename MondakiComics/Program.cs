@@ -90,8 +90,8 @@ builder.Services.AddAuthentication(options =>
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        b => b.AllowAnyOrigin()
+    options.AddPolicy("AllowFrontend",
+        b => b.WithOrigins("https://your-vercel-domain.vercel.app", "http://localhost:5173")
               .AllowAnyMethod()
               .AllowAnyHeader());
 });
@@ -148,7 +148,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontend");
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
