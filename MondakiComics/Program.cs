@@ -93,7 +93,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
-        b => b.WithOrigins("https://your-vercel-domain.vercel.app", "http://localhost:5173")
+        b => b.WithOrigins("https://mondaki-comics-front.vercel.app", "http://localhost:5173")
               .AllowAnyMethod()
               .AllowAnyHeader());
 });
