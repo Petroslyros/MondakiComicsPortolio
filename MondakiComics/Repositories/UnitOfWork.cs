@@ -13,10 +13,6 @@ namespace MondakiComics.Repositories
             _context = context;
         }
 
-
-
-
-        //implementation of getter with expression-bodied property
         public IUserRepository UserRepository => new UserRepository(_context);
 
         public IArtworkRepository ArtworkRepository => new ArtworkRepository(_context);
@@ -25,8 +21,8 @@ namespace MondakiComics.Repositories
 
         public IContactMessageRepository ContactMessageRepository => new ContactMessageRepository(_context);
 
+        public INewsPostRepository NewsPostRepository => new NewsPostRepository(_context);
 
-        //for commit and rolback
         public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() > 0;

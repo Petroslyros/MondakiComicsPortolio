@@ -14,15 +14,17 @@ namespace MondakiComics.Services
         private readonly ILogger<ArtworkCategoryService> categoryLogger;
         private readonly ILogger<UserService> userLogger;
         private readonly ILogger<ContactMessageService> contactLogger;
+        private readonly ILogger<NewsPostService> newsLogger;
 
         public ApplicationService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IImageUploadService imageUploadService,  // injected here
+            IImageUploadService imageUploadService,
             ILogger<ArtworkService> artworkLogger,
             ILogger<ArtworkCategoryService> categoryLogger,
             ILogger<UserService> userLogger,
-            ILogger<ContactMessageService> contactLogger)
+            ILogger<ContactMessageService> contactLogger,
+            ILogger<NewsPostService> newsLogger)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -31,6 +33,7 @@ namespace MondakiComics.Services
             this.categoryLogger = categoryLogger;
             this.userLogger = userLogger;
             this.contactLogger = contactLogger;
+            this.newsLogger = newsLogger;
         }
 
         public UserService UserService =>
@@ -44,5 +47,8 @@ namespace MondakiComics.Services
 
         public ContactMessageService ContactMessageService =>
             new ContactMessageService(unitOfWork, mapper, contactLogger);
+
+        public NewsPostService NewsPostService =>
+    new NewsPostService(unitOfWork, mapper, imageUploadService, newsLogger);
     }
 }

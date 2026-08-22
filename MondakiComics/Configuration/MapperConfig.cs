@@ -9,7 +9,6 @@ namespace MondakiComics.Configuration
         public MapperConfig()
         {
             CreateMap<User, UserReadOnlyDTO>().ReverseMap();
-            // avoids accidentally setting or overwriting sensitive or database-generated fields
             CreateMap<UserRegisterDTO, User>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Password, opt => opt.Ignore())
@@ -38,7 +37,11 @@ namespace MondakiComics.Configuration
             // Contact mappings
             CreateMap<ContactMessage, ContactMessageReadOnlyDTO>();
 
-
+            // News mappings
+            CreateMap<NewsPost, NewsPostReadOnlyDTO>();
+            CreateMap<NewsPostInsertDTO, NewsPost>();
+            CreateMap<NewsPostUpdateDTO, NewsPost>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

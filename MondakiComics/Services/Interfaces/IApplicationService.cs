@@ -5,9 +5,7 @@
         UserService UserService { get; }
         ArtworkService ArtworkService { get; }
         ArtworkCategoryService ArtworkCategoryService { get; }
-
         ContactMessageService ContactMessageService { get; }
-
-
+        NewsPostService NewsPostService { get; }
     }
 }

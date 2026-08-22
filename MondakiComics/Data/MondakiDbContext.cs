@@ -11,6 +11,7 @@ namespace MondakiComics.Data
         public DbSet<Artwork> Artworks { get; set; } = null!;
         public DbSet<ArtworkImage> ArtworkImages { get; set; } = null!;
         public DbSet<ContactMessage> ContactMessages { get; set; } = null!;
+        public DbSet<NewsPost> NewsPosts { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -86,6 +87,20 @@ namespace MondakiComics.Data
                       .WithMany(u => u.ContactMessages)
                       .HasForeignKey(m => m.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<NewsPost>(entity =>
+            {
+                modelBuilder.Entity<NewsPost>(entity =>
+                {
+                    entity.ToTable("NewsPosts");
+                    entity.HasKey(e => e.Id);
+                    entity.Property(e => e.Title).HasMaxLength(255).IsRequired();
+                    entity.Property(e => e.Content).HasMaxLength(4000).IsRequired();
+                    entity.Property(e => e.ImageUrl).HasMaxLength(1000);
+                    entity.Property(e => e.InsertedAt).ValueGeneratedOnAdd().HasDefaultValueSql("NOW()");
+                    entity.Property(e => e.ModifiedAt).ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("NOW()");
+                });
             });
         }
     }
