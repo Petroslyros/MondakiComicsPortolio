@@ -16,6 +16,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Get all environment variables
 var dbHost = Environment.GetEnvironmentVariable("MONDAKI_DB_HOST") ?? "localhost";
 var dbPort = Environment.GetEnvironmentVariable("MONDAKI_DB_PORT") ?? "5432";
@@ -155,5 +156,11 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<MondakiDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
