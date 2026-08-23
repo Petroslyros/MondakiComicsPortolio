@@ -34,7 +34,7 @@ namespace MondakiComics.Controllers
         }
 
         [HttpPost]
-        //[AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UserReadOnlyDTO>> RegisterUser([FromBody] UserRegisterDTO registerDto)
         {
             if (!ModelState.IsValid)
